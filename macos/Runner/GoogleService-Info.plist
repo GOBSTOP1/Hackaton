@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyC_brs4dv-rp1C3c16Sse3t_0brvKP1vLw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>12414139549</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.hackaton2.RunnerTests</string>
+	<key>PROJECT_ID</key>
+	<string>hackaton-4f772</string>
+	<key>STORAGE_BUCKET</key>
+	<string>hackaton-4f772.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:12414139549:ios:9f4baa144bec844dfda874</string>
+</dict>
+</plist>
