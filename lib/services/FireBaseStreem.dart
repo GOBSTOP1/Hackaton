@@ -9,18 +9,22 @@ class FireBaseStreem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
+    return StreamBuilder<User?>(
     stream: FirebaseAuth.instance.authStateChanges(), 
-    builder: ((context, snapshot) {
+    builder: (context, snapshot) {
       if (snapshot.hasError){
-      return const Login();
+      return const Scaffold(
+         body: Center(child: Text('Что-то пошло не так!'))
+      );
       } else if (snapshot.hasData) {
        if (snapshot.data!.emailVerified){
-         return const Login();
+        return const Login();
+          // Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
        } return const HomeBar();
       } else {
         return const Login();
+        //  Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
       }                                       
-    }));
+    });
   }
 }

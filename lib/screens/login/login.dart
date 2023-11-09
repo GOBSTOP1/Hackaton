@@ -55,7 +55,7 @@ class _LoginState extends State<Login> {
       appBar: AppBar(
         title: const Text("Вход"),
         iconTheme: IconThemeData(
-          color: theme.appBarTheme.iconTheme?.color,
+           color: theme.appBarTheme.iconTheme?.color,
         ),
         backgroundColor: theme.scaffoldBackgroundColor,
         actions: [],
@@ -76,6 +76,10 @@ class _LoginState extends State<Login> {
                 }
                 return 'Введите действительный адрекс электронной почты';
               },
+              decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Введите Email',
+                ),
             ),
             const SizedBox(
               height: 30,
