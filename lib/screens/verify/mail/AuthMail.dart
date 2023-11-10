@@ -83,7 +83,9 @@ class _AuthMailState extends State<AuthMail> {
       ),
       backgroundColor: theme.scaffoldBackgroundColor,
       body: Padding(padding: EdgeInsets.all(30,),
-      child: Form(child: Column(
+      child: Form(
+        key: formKey,
+        child: Column(
         children: [
           TextFormField(
             keyboardType: TextInputType.emailAddress,

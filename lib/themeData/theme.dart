@@ -40,6 +40,17 @@ final lightTheme = ThemeData(
   listTileTheme: const ListTileThemeData(
     iconColor: Colors.black, // Цвет значков в элементах списка
   ),
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: MaterialStateProperty.resolveWith<Color>(
+        (Set<MaterialState> states ){
+          return states.contains(MaterialState.disabled)
+          ? Colors.grey
+          : Colors.black;
+        }
+      ),
+    )
+  ) ,
   textTheme: const TextTheme(
     bodyMedium: TextStyle(
       color: Colors.black, // Цвет среднего текста
@@ -63,6 +74,7 @@ final lightTheme = ThemeData(
       fontWeight:
           FontWeight.w700, // Жирность шрифта заголовков среднего размера
     ),
+    
   ),
 );
 
@@ -78,6 +90,17 @@ final darkTheme = ThemeData(
   ),
   scaffoldBackgroundColor:
       Color.fromARGB(255, 26, 26, 26), // Фон всего экрана (Scaffold)
+      textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: MaterialStateProperty.resolveWith<Color>(
+        (Set<MaterialState> states ){
+          return states.contains(MaterialState.disabled)
+          ? Colors.grey
+          : Colors.white;
+        }
+      ),
+    )
+  ) ,
 
   dividerColor: Colors.grey, // Цвет разделителей
   appBarTheme: const AppBarTheme(

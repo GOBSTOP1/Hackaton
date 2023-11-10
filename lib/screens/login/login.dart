@@ -38,11 +38,20 @@ class _LoginState extends State<Login> {
       
 
     } on FirebaseAuthException catch (e){
-      print(e.code);
+      print('ЯТУТ');
+      print(e.code, );
       if (e.code == 'user-not-found' || e.code == 'wrong-password'){
       SnackBarService.showSnackBar(context, 'Неправильный email или пароль', true,);
       return;
+      } else {
+         SnackBarService.showSnackBar(
+          context,
+          'Неправильный email или пароль',
+          true,
+        );
+        return;
       }
+
     
     }
     navigator.pushNamedAndRemoveUntil('/', (route) => false);
@@ -53,88 +62,85 @@ class _LoginState extends State<Login> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("Вход"),
         iconTheme: IconThemeData(
-           color: theme.appBarTheme.iconTheme?.color,
+          color: theme.appBarTheme.iconTheme?.color,
         ),
         backgroundColor: theme.scaffoldBackgroundColor,
-        actions: [],
+        title:  Text('Войти'),
       ),
-      backgroundColor: theme.scaffoldBackgroundColor,
       body: Padding(
-        padding: const EdgeInsets.all(30),
+        padding: const EdgeInsets.all(30.0),
         child: Form(
-            child: Column(
-          children: [
-            TextFormField(
-              keyboardType: TextInputType.emailAddress,
-              autocorrect: false,
-              controller: emailTextInputController,
-              validator: (value) {
+          key: formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                keyboardType: TextInputType.emailAddress,
+                autocorrect: false,
+                controller: emailTextInputController,
+                validator: (value) {
                 if (value != null && value.contains('@')) {
                   return null;
                 }
                 return 'Введите действительный адрекс электронной почты';
               },
-              decoration: const InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Введите Email',
                 ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            TextFormField(
-              obscureText: isHiddenPassword,
-              autocorrect: false,
-              controller: passwordTextInputController,
-              validator: (value) {
+              ),
+              const SizedBox(height: 30),
+              TextFormField(
+                autocorrect: false,
+                controller: passwordTextInputController,
+                obscureText: isHiddenPassword,
+                validator: (value) {
                 if (value != null && value.length > 6) {
                   return null;
                 } else if (value == null || value.length < 6) {
                   return 'Минимум 6 символов';
                 }
+                return null;
               },
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                hintText: 'Введите пароль',
-                suffix: InkWell(
-                  onTap: togglePasswordView,
-                  child: Icon(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: 'Введите пароль',
+                  suffix: InkWell(
+                    onTap: togglePasswordView,
+                    child: Icon(
                       isHiddenPassword
                           ? Icons.visibility_off
                           : Icons.visibility,
-                      color: theme.appBarTheme.iconTheme?.color),
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text(
-                'Войти',
-                style: theme.textTheme.bodyMedium,
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: (){login();},
+                child:  Center(child: Text('Войти',style: theme.textTheme.bodyMedium)),
+                
               ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            TextButton(
-              onPressed: () {},
-              child: const Text(
-                'Зарегистрироваться',
-                style: TextStyle(decoration: TextDecoration.underline),
+              const SizedBox(height: 30),
+              TextButton(
+                onPressed: () => Navigator.of(context).pushNamed('/authMail'),
+                child:  Text(
+                  'Зарегестрироваться',
+                 style: theme.textTheme.bodySmall,
+                ),
+                style: theme.textButtonTheme.style,
               ),
-            ),
-            TextButton(
-              onPressed: () {},
-              child: const Text("Забыли пароль?"),
-            )
-          ],
-        )),
+              TextButton(
+                onPressed: () =>
+                    Navigator.of(context).pushNamed('/reset_password'),
+                child:  Text('Сбросить пароль',style: theme.textTheme.bodySmall,),
+                style: theme.textButtonTheme.style,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

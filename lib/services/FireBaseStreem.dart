@@ -17,11 +17,16 @@ class FireBaseStreem extends StatelessWidget {
          body: Center(child: Text('Что-то пошло не так!'))
       );
       } else if (snapshot.hasData) {
-       if (snapshot.data!.emailVerified){
-        return const Login();
+       if (!snapshot.data!.emailVerified){
+        Future.delayed(Duration.zero, () {
+              Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+            });
           // Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
        } return const HomeBar();
       } else {
+       Future.delayed(Duration.zero, () {
+              Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+            });
         return const Login();
         //  Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
       }                                       
