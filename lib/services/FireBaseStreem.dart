@@ -22,7 +22,8 @@ class FireBaseStreem extends StatelessWidget {
               Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
             });
           // Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
-       } return const HomeBar();
+          return const HomeBar();
+       } 
       } else {
        Future.delayed(Duration.zero, () {
               Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);

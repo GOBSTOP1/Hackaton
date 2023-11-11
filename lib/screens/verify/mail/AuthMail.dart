@@ -153,7 +153,7 @@ class _AuthMailState extends State<AuthMail> {
                     obscureText: isHiddenPassword,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
-                      if (value != null && value.length > 6) {
+                      if (value != null && value.length >= 6) {
                         return null;
                       }
                       return 'Минимум 6 символов';
