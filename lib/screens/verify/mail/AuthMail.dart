@@ -14,8 +14,10 @@ class _AuthMailState extends State<AuthMail> {
   bool isHiddenPassword = true;
   TextEditingController emailTextInputController = TextEditingController();
   TextEditingController passwordTextInputController = TextEditingController();
-  TextEditingController passwordTextRepeatInputController = TextEditingController();
+  TextEditingController passwordTextRepeatInputController =
+      TextEditingController();
   final formKey = GlobalKey<FormState>();
+
   @override
   void dispose() {
     emailTextInputController.dispose();
@@ -23,11 +25,13 @@ class _AuthMailState extends State<AuthMail> {
     passwordTextRepeatInputController.dispose();
     super.dispose();
   }
-   void togglePasswordView() {
+
+  void togglePasswordView() {
     setState(() {
       isHiddenPassword = !isHiddenPassword;
     });
   }
+
   Future<void> signUp() async {
     final navigator = Navigator.of(context);
 
@@ -68,110 +72,129 @@ class _AuthMailState extends State<AuthMail> {
       }
     }
 
-    navigator.pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+    navigator.pushNamedAndRemoveUntil('/verifyMail', (Route<dynamic> route) => false,
+    arguments: {
+    'email': emailTextInputController.text.trim(),
+    
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final email = emailTextInputController.text.trim();
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Регистрация'), iconTheme: IconThemeData(
-          color: theme.appBarTheme.iconTheme?.color 
+      resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: Text('Регистрация'),
+          iconTheme: IconThemeData(color: theme.appBarTheme.iconTheme?.color),
+          backgroundColor: theme.scaffoldBackgroundColor,
+          actions: [],
         ),
-         backgroundColor: theme.scaffoldBackgroundColor,
-         actions: [],
-      ),
-      backgroundColor: theme.scaffoldBackgroundColor,
-      body: Padding(padding: EdgeInsets.all(30,),
-      child: Form(
-        key: formKey,
-        child: Column(
-        children: [
-          TextFormField(
-            keyboardType: TextInputType.emailAddress,
-            autocorrect: false,
-            controller: emailTextInputController,
-            
-            validator: (value){
-              if(value != null && value.contains('@')){
-                return null;
-              } return 'Введите корректный адрес электронной почты';
-            } ,
+        backgroundColor: theme.scaffoldBackgroundColor,
+        body: Padding(
+          
+          padding: EdgeInsets.all(
+            30,
           ),
-          const SizedBox(
-              height: 30,
-            ),
-          TextFormField(
-            autocorrect: false,
-            controller: passwordTextInputController,
-            obscureText: isHiddenPassword,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (value) {
-              if(value != null && value.length > 6){
-                return null;
-              } return 'Минимус 6 символов';
-            },
-            decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  hintText: 'Введите пароль',
-                  suffix: InkWell(
-                    onTap: togglePasswordView,
-                    child: Icon(
-                      isHiddenPassword
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                      color: Colors.black,
+          child: Form(
+              key: formKey,
+              child: Column(
+                children: [
+                  TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    autocorrect: false,
+                    controller: emailTextInputController,
+                    validator: (value) {
+                      if (value != null && value.contains('@')) {
+                        return null;
+                      }
+                      return 'Введите корректный адрес электронной почты';
+                    },
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Введите Email',
                     ),
                   ),
-                ),
-          ),
-          const SizedBox(
-              height: 30,
-            ),
-            TextFormField(
-              autocorrect: false,
-              controller: passwordTextRepeatInputController,
-              obscureText: isHiddenPassword,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (value){
-                if(value != null && value.length > 6){
-                  return null;
-                } return 'Минимум 6 символов';
-              },
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Повторите пароль',
-                suffix: InkWell(
-                  onTap: togglePasswordView,
-                  child: Icon(
-                      isHiddenPassword
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                      color: Colors.black,
-                    ),
-                )
-              ),
-
-            ),
-            const SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: signUp,
-                child: const Center(child: Text('Регистрация')),
-              ),
-               const SizedBox(height: 30),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text(
-                  'Войти',
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
+                  const SizedBox(
+                    height: 30,
                   ),
-                ),
-              ),
-        ],
-      )),
-      
-      )
-    );
+                  TextFormField(
+                    autocorrect: false,
+                    controller: passwordTextInputController,
+                    obscureText: isHiddenPassword,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value != null && value.length >= 6) {
+                        return null;
+                      }
+                      return 'Минимус 6 символов';
+                    },
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      hintText: 'Введите пароль',
+                      suffix: InkWell(
+                        onTap: togglePasswordView,
+                        child: Icon(
+                          isHiddenPassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  TextFormField(
+                    autocorrect: false,
+                    controller: passwordTextRepeatInputController,
+                    obscureText: isHiddenPassword,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value != null && value.length > 6) {
+                        return null;
+                      }
+                      return 'Минимум 6 символов';
+                    },
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Повторите пароль',
+                        suffix: InkWell(
+                          onTap: togglePasswordView,
+                          child: Icon(
+                            isHiddenPassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Colors.black,
+                          ),
+                        )),
+                  ),
+                  const SizedBox(height: 30),
+                  ElevatedButton(
+                    style: theme.textButtonTheme.style,
+                    onPressed: () {
+                      signUp();
+                    },
+                    child: Center(
+                      child: Text(
+                        'Регистрация',
+                        style: theme.textTheme.bodyMedium,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    style: theme.textButtonTheme.style,
+                    child: Text(
+                      'Войти',
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ),
+                ],
+              )),
+        ));
   }
 }

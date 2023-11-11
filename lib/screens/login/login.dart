@@ -27,35 +27,40 @@ class _LoginState extends State<Login> {
       isHiddenPassword = !isHiddenPassword;
     });
   }
+
   Future<void> login() async {
     final navigator = Navigator.of(context);
     final isValid = formKey.currentState!.validate();
-    if(!isValid) return;
-    try{
+    if (!isValid) return;
+    try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: emailTextInputController.text.trim(), 
-      password:passwordTextInputController.text.trim(),);
-      
-
-    } on FirebaseAuthException catch (e){
+        email: emailTextInputController.text.trim(),
+        password: passwordTextInputController.text.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
       print('ЯТУТ');
-      print(e.code, );
-      if (e.code == 'user-not-found' || e.code == 'wrong-password'){
-      SnackBarService.showSnackBar(context, 'Неправильный email или пароль', true,);
-      return;
+      print(
+        e.code,
+      );
+      if (e.code == 'user-not-found' || e.code == 'wrong-password') {
+        SnackBarService.showSnackBar(
+          context,
+          'Неправильный email или пароль',
+          true,
+        );
+        return;
       } else {
-         SnackBarService.showSnackBar(
+        SnackBarService.showSnackBar(
           context,
           'Неправильный email или пароль',
           true,
         );
         return;
       }
-
-    
     }
     navigator.pushNamedAndRemoveUntil('/', (route) => false);
   }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -66,8 +71,9 @@ class _LoginState extends State<Login> {
           color: theme.appBarTheme.iconTheme?.color,
         ),
         backgroundColor: theme.scaffoldBackgroundColor,
-        title:  Text('Войти'),
+        title: Text('Войти'),
       ),
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Form(
@@ -79,11 +85,11 @@ class _LoginState extends State<Login> {
                 autocorrect: false,
                 controller: emailTextInputController,
                 validator: (value) {
-                if (value != null && value.contains('@')) {
-                  return null;
-                }
-                return 'Введите действительный адрекс электронной почты';
-              },
+                  if (value != null && value.contains('@')) {
+                    return null;
+                  }
+                  return 'Введите действительный адрекс электронной почты';
+                },
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Введите Email',
@@ -95,13 +101,13 @@ class _LoginState extends State<Login> {
                 controller: passwordTextInputController,
                 obscureText: isHiddenPassword,
                 validator: (value) {
-                if (value != null && value.length > 6) {
+                  if (value != null && value.length >= 6) {
+                    return null;
+                  } else if (value == null || value.length < 6) {
+                    return 'Минимум 6 символов';
+                  }
                   return null;
-                } else if (value == null || value.length < 6) {
-                  return 'Минимум 6 символов';
-                }
-                return null;
-              },
+                },
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
@@ -119,24 +125,29 @@ class _LoginState extends State<Login> {
               ),
               const SizedBox(height: 30),
               ElevatedButton(
-                onPressed: (){login();},
-                child:  Center(child: Text('Войти',style: theme.textTheme.bodyMedium)),
-                
+                onPressed: () {
+                  login();
+                },
+                child: Center(
+                    child: Text('Войти', style: theme.textTheme.bodyMedium)),
               ),
               const SizedBox(height: 30),
               TextButton(
                 onPressed: () => Navigator.of(context).pushNamed('/authMail'),
-                child:  Text(
-                  'Зарегестрироваться',
-                 style: theme.textTheme.bodySmall,
-                ),
                 style: theme.textButtonTheme.style,
+                child: Text(
+                  'Зарегестрироваться',
+                  style: theme.textTheme.bodySmall,
+                ),
               ),
               TextButton(
                 onPressed: () =>
                     Navigator.of(context).pushNamed('/reset_password'),
-                child:  Text('Сбросить пароль',style: theme.textTheme.bodySmall,),
                 style: theme.textButtonTheme.style,
+                child: Text(
+                  'Сбросить пароль',
+                  style: theme.textTheme.bodySmall,
+                ),
               ),
             ],
           ),
