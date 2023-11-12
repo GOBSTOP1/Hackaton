@@ -10,7 +10,7 @@ import '../screens/screens.dart';
 final routes = {
   '/': (context) => const HomeBar(),
   '/login': (context) => const Login(),
-  '/firebaseStreem': (context) => const FireBaseStreem(),
+  '/firebaseStreem': (context) => const FirebaseStream(),
   '/authMail': (context) => const AuthMail(),
   '/verifyMail': (context) =>  const VerifyMail(),
 };

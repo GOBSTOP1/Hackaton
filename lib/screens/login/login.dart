@@ -67,11 +67,12 @@ class _LoginState extends State<Login> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         iconTheme: IconThemeData(
           color: theme.appBarTheme.iconTheme?.color,
         ),
         backgroundColor: theme.scaffoldBackgroundColor,
-        title: Text('Войти'),
+        title: const Text('Войти'),
       ),
       backgroundColor: theme.scaffoldBackgroundColor,
       body: Padding(

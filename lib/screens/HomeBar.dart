@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hackaton2/account/account.dart';
 
 
 import 'screens.dart';
@@ -9,21 +10,17 @@ class HomeBar extends StatefulWidget {
   @override
   State<HomeBar> createState() => _HomeBarState();
 }
-
+   final List<Widget> pages = [
+      Account(),
+      ];
 class _HomeBarState extends State<HomeBar> {
   int currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: Theme.of(context).appBarTheme.iconTheme?.color,
-        ),
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: const Text('Hackaton'),
-        actions: const [],
-      ),
+      
+      
       bottomNavigationBar: NavigationBar(
         backgroundColor:
             Theme.of(context).bottomNavigationBarTheme.backgroundColor,
@@ -46,16 +43,7 @@ class _HomeBarState extends State<HomeBar> {
           )
         ],
       ),
-      body: <Widget>[
-        Container(
-          alignment: Alignment.center,
-          child: const Text('Page 1'),
-        ),
-        Container(
-          alignment: Alignment.center,
-          child: const Text('Page 2'),
-        ),
-      ][currentPageIndex],
+      body:pages[currentPageIndex],
       drawer: DrawerBloc(),
     );
   }
