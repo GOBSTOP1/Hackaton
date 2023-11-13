@@ -47,7 +47,7 @@ class _HomeBarState extends State<HomeBar> {
         ],
       ),
       body:pages[currentPageIndex],
-      drawer: DrawerBloc(),
+      
     );
   }
 }
