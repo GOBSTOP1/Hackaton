@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hackaton2/account/account.dart';
+import 'package:hackaton2/features/Account/view/account_screen.dart';
+
+import '../widgets/Home_bar_widget.dart';
 
 
-import 'screens.dart';
+
+
 
 class HomeBar extends StatefulWidget {
   const HomeBar({super.key});

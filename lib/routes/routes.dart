@@ -1,10 +1,7 @@
 
-import 'package:flutter/material.dart';
-import 'package:hackaton2/screens/HomeBar.dart';
-import 'package:hackaton2/screens/verify/mail/AuthMail.dart';
-import 'package:hackaton2/screens/verify/mail/verifyMail.dart';
+import 'package:hackaton2/features/HomeBar/HomeBar.dart';
 import 'package:hackaton2/services/FireBaseStreem.dart';
-import '../screens/screens.dart';
+import '../features/Verify/Verify.dart';
 
 
 final routes = {
