@@ -17,7 +17,7 @@ class _ListViewAccountState extends State<ListViewAccount> {
   final navigator = Navigator.of(context);
     await FirebaseAuth.instance.signOut();
 
-    navigator.pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+    navigator.pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
   }
 
   @override

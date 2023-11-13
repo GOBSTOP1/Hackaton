@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hackaton2/features/Verify/Verify.dart';
 import 'package:hackaton2/repositories/Verify/verify_repository.dart';
 
 import '../../../../services/SnackBar.dart';
+import '../../bloc/email/emailBloc.dart';
 import '../../widgets/email/Auth_mail_widget.dart';
 
 class AuthMail extends StatefulWidget {
@@ -27,17 +30,14 @@ class _AuthMailState extends State<AuthMail> {
     passwordTextRepeatInputController.dispose();
     super.dispose();
   }
- void togglePasswordView() {
-  // Выполните асинхронную работу здесь
-  // Например, можете использовать Future.delayed для имитации асинхронной задачи
-  Future.delayed(Duration(milliseconds: 500), () {
-    // После завершения асинхронной работы обновите состояние внутри setState
+ 
+void togglePasswordView() {
+  SchedulerBinding.instance.addPostFrameCallback((_) {
     setState(() {
       isHiddenPassword = !isHiddenPassword;
     });
   });
 }
-
   Future<void> signUp() async {
   final authService = VerifyRepository();
   await authService.signUp(
@@ -73,6 +73,7 @@ class _AuthMailState extends State<AuthMail> {
         );
   }
 }
+
   // Future<void> signUp() async {
   //   final navigator = Navigator.of(context);
 

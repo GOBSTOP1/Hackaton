@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hackaton2/repositories/Verify/verify_repository.dart';
 import 'package:hackaton2/services/SnackBar.dart';
 
 import '../../widgets/login/login_widget.dart';
@@ -31,37 +32,11 @@ class _LoginState extends State<Login> {
   }
 
   Future<void> login() async {
-    final navigator = Navigator.of(context);
-    final isValid = formKey.currentState!.validate();
-    if (!isValid) return;
-
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailTextInputController.text.trim(),
-        password: passwordTextInputController.text.trim(),
-      );
-    } on FirebaseAuthException catch (e) {
-      print('ЯТУТ');
-      print(
-        e.code,
-      );
-      if (e.code == 'user-not-found' || e.code == 'wrong-password') {
-        SnackBarService.showSnackBar(
-          context,
-          'Неправильный email или пароль',
-          true,
-        );
-        return;
-      } else {
-        SnackBarService.showSnackBar(
-          context,
-          'Неправильный email или пароль',
-          true,
-        );
-        return;
-      }
-    }
-    navigator.pushNamedAndRemoveUntil('/', (route) => false);
+    final authService = VerifyRepository();
+    await authService.login(
+      context: context, 
+      emailController:emailTextInputController, 
+      passwordController: passwordTextInputController);
   }
 
   @override

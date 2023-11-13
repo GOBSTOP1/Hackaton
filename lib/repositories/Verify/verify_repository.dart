@@ -60,4 +60,26 @@ class VerifyRepository implements AbstractVerifyRepository {
       },
     );
   }
+   Future<void> login({
+    required BuildContext context,
+    required TextEditingController emailController,
+    required TextEditingController passwordController,
+  }) async {
+    final isValid = true; // Add your validation logic here
+    if (!isValid) return;
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+      Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+    } on FirebaseAuthException catch (e) {
+      SnackBarService.showSnackBar(
+        context,
+        'Неправильный email или пароль',
+        true,
+      );
+    }
+  }
 }

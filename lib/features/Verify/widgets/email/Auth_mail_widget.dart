@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../bloc/email/emailBloc.dart';
 
 class RegistrationForm extends StatelessWidget {
   final TextEditingController emailController;
@@ -10,7 +13,7 @@ class RegistrationForm extends StatelessWidget {
   final Function signUp;
 
   const RegistrationForm({
-    required this.emailController,
+    required this.emailController,   
     required this.passwordController,
     required this.repeatPasswordController,
     required this.isHiddenPassword,
