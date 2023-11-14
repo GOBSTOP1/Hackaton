@@ -97,6 +97,8 @@ class RegistrationForm extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(height: 30,),
+            ElevatedButton(onPressed: () => Navigator.pushNamed(context, '/authPhone'), child: Text('По номеру телефона'),),
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {

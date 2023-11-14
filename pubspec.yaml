@@ -41,6 +41,7 @@ dependencies:
   get_it: ^7.6.4
   firebase_core: ^2.21.0
   firebase_auth: ^4.12.1
+  cloud_firestore: ^4.13.0
  
   
 

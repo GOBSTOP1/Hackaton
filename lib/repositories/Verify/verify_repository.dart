@@ -1,13 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/editable_text.dart';
-import 'package:flutter/src/widgets/form.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:hackaton2/repositories/Verify/abstract_verify.dart';
 import 'package:hackaton2/services/SnackBar.dart';
 
 class VerifyRepository implements AbstractVerifyRepository {
-
+  String? verificationId;
   @override
   Future<void> signUp({
     required BuildContext context,
@@ -67,7 +65,7 @@ class VerifyRepository implements AbstractVerifyRepository {
   }) async {
     final isValid = true; // Add your validation logic here
     if (!isValid) return;
-
+ 
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
@@ -82,4 +80,43 @@ class VerifyRepository implements AbstractVerifyRepository {
       );
     }
   }
+  Future<void> verifyPhoneNumber({
+    required TextEditingController numberController, 
+    }  ) async{
+     
+    try {
+      await FirebaseAuth.instance.verifyPhoneNumber(
+        verificationCompleted:  (PhoneAuthCredential credential) async {
+          // Automatically sign in the user (only on Android)
+          await FirebaseAuth.instance.signInWithCredential(credential);
+          // Handle verification completed
+        }, 
+        verificationFailed: (FirebaseAuthException e) {},
+        // codeSent: (String verificationId, int? resendToken) {}, 
+        codeSent: (String verificationId, int? resendToken) {
+          // Сохранить verificationId в классе
+          this.verificationId = verificationId;
+        },
+        codeAutoRetrievalTimeout:(String verificationId) {},
+        phoneNumber: numberController.text.trim(),
+      );
+    } catch (e){
+      
+    }
+  }
+  Future<void> signInWithCode({required TextEditingController smsController }) async {
+    try{
+      if(verificationId != null){
+        PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: verificationId!, 
+          smsCode:  smsController.text.trim()
+          );
+        await FirebaseAuth.instance.signInWithCredential(credential);
+        verificationId = null;
+      }
+    } catch (e){
+      
+    }
+  }
+  
 }

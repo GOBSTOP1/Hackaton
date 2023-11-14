@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hackaton2/repositories/Menu/abstract_menu.dart';
+import 'package:hackaton2/repositories/Menu/menu_repository.dart';
 
 class ListViewAccount extends StatefulWidget {
   const ListViewAccount({
@@ -11,6 +13,7 @@ class ListViewAccount extends StatefulWidget {
 }
 
 class _ListViewAccountState extends State<ListViewAccount> {
+
  Future<void> signOut() async {
     
 
@@ -22,9 +25,11 @@ class _ListViewAccountState extends State<ListViewAccount> {
 
   @override
   Widget build(BuildContext context) {
+     final theme = Theme.of(context);
     return ListView(
       
       children: <Widget>[
+        
         ListTile(
           title: Text('Пришелец'),
           leading: Icon(Icons.pages),
@@ -35,6 +40,12 @@ class _ListViewAccountState extends State<ListViewAccount> {
         ),
         ListTile(
           title: IconButton(onPressed: () => signOut(), icon:Icon(Icons.exit_to_app)),
+          trailing: IconButton(onPressed: () => MenuRepository().loadMenu(), icon: Icon(Icons.download),),
+        ),
+        ListTile(
+          title: Text('Настройки',style: theme.textTheme.bodyMedium,),
+          trailing: Icon(Icons.forward),
+          onTap: (){Navigator.pushNamed(context, '/settings');},
         )
       ],
     );

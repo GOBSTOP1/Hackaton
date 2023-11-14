@@ -1,6 +1,6 @@
 part of 'themebloc.dart';
 
- abstract class ThemeEvent {}
+abstract class ThemeEvent {}
 
 
 class darkThemeEvent  extends ThemeEvent{}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hackaton2/themeData/theme.dart';
 
 // import 'package:talker_flutter/talker_flutter.dart';
 import 'routes/routes.dart';
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       child: BlocBuilder<ThemeBloc, ThemeState>(
         builder: (context, state)  {
           return MaterialApp(
-            title: 'Hackaton',
+            
             theme: state.themeData,
             routes: routes,
             navigatorObservers: [
