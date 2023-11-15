@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/email/emailBloc.dart';
 
 class RegistrationForm extends StatelessWidget {
   final TextEditingController emailController;
@@ -12,7 +10,7 @@ class RegistrationForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final Function signUp;
 
-  const RegistrationForm({
+  const RegistrationForm({super.key, 
     required this.emailController,   
     required this.passwordController,
     required this.repeatPasswordController,
@@ -25,7 +23,7 @@ class RegistrationForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(30),
+      padding: const EdgeInsets.all(30),
       child: Form(
         key: formKey,
         child: Column(
@@ -86,7 +84,7 @@ class RegistrationForm extends StatelessWidget {
                 return 'Минимум 6 символов';
               },
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
                 hintText: 'Повторите пароль',
                 suffix: InkWell(
                   onTap: togglePasswordView(),
@@ -98,20 +96,20 @@ class RegistrationForm extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30,),
-            ElevatedButton(onPressed: () => Navigator.pushNamed(context, '/authPhone'), child: Text('По номеру телефона'),),
+            ElevatedButton(onPressed: () => Navigator.pushNamed(context, '/authPhone'), child: const Text('По номеру телефона'),),
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 signUp();
               },
-              child: Center(
+              child: const Center(
                 child: Text('Регистрация'),
               ),
             ),
             const SizedBox(height: 30),
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Войти'),
+              child: const Text('Войти'),
             ),
           ],
         ),

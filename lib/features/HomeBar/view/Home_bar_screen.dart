@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hackaton2/features/Account/view/account_screen.dart';
 import 'package:hackaton2/features/Menu/Menu.dart';
 
-import '../widgets/Home_bar_widget.dart';
 
 
 
@@ -15,8 +14,8 @@ class HomeBar extends StatefulWidget {
   State<HomeBar> createState() => _HomeBarState();
 }
    final List<Widget> pages = [ 
-      Menu(),
-      Account(),
+      const Menu(),
+      const Account(),
      
       ];
 class _HomeBarState extends State<HomeBar> {

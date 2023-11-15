@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class AuthForm extends StatelessWidget {
   const AuthForm({
-    Key? key,
+    super.key,
     required this.formKey,
     required this.emailController,
     required this.passwordController,
     required this.isHiddenPassword,
     required this.onTogglePasswordView,
     required this.onLogin,
-  }) : super(key: key);
+  });
 
   final GlobalKey<FormState> formKey;
   final TextEditingController emailController;

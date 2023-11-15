@@ -58,12 +58,13 @@ class VerifyRepository implements AbstractVerifyRepository {
       },
     );
   }
-   Future<void> login({
+   @override
+  Future<void> login({
     required BuildContext context,
     required TextEditingController emailController,
     required TextEditingController passwordController,
   }) async {
-    final isValid = true; // Add your validation logic here
+    const isValid = true; // Add your validation logic here
     if (!isValid) return;
  
     try {
@@ -72,7 +73,7 @@ class VerifyRepository implements AbstractVerifyRepository {
         password: passwordController.text.trim(),
       );
       Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       SnackBarService.showSnackBar(
         context,
         'Неправильный email или пароль',
@@ -80,6 +81,7 @@ class VerifyRepository implements AbstractVerifyRepository {
       );
     }
   }
+  @override
   Future<void> verifyPhoneNumber({
     required TextEditingController numberController, 
     }  ) async{
@@ -104,6 +106,7 @@ class VerifyRepository implements AbstractVerifyRepository {
       
     }
   }
+  @override
   Future<void> signInWithCode({required TextEditingController smsController }) async {
     try{
       if(verificationId != null){

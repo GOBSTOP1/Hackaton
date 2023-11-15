@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hackaton2/themeData/theme.dart';
 
 // import 'package:talker_flutter/talker_flutter.dart';
 import 'routes/routes.dart';
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
             
             theme: state.themeData,
             routes: routes,
-            navigatorObservers: [
+            navigatorObservers: const [
               // TalkerRouteObserver(GetIt.I<Talker>()),
             ],
             initialRoute: '/firebaseStreem',

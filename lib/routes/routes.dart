@@ -1,7 +1,7 @@
 
 
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hackaton2/features/Account/view/Organisation/organisation.dart';
 import 'package:hackaton2/features/Account/view/settings/Settings.dart';
 import 'package:hackaton2/features/Account/view/settings/ThemeAppSreen.dart';
 import 'package:hackaton2/features/HomeBar/HomeBar.dart';
@@ -18,6 +18,7 @@ final routes = {
   '/verifyMail': (context) =>  const VerifyMail(),
   '/authPhone': (context) => const PhoneScreen(),
   '/menu': (context) => const Menu(),
-  '/settings': (context) => SettingsScreen(),
-  '/themeApp':(context) => ThemeAppScreen(),
+  '/settings': (context) => const SettingsScreen(),
+  '/themeApp':(context) => const ThemeAppScreen(),
+  '/organisationChose': (context) => const OrganisationScreen(),
 };

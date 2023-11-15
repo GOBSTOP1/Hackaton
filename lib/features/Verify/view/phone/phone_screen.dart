@@ -24,10 +24,10 @@ class _PhoneScreenState extends State<PhoneScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text('Регистрация'),
+      appBar: AppBar(title: const Text('Регистрация'),
       iconTheme: IconThemeData(color: theme.appBarTheme.iconTheme?.color),
       backgroundColor: theme.scaffoldBackgroundColor,
-      actions: [],
+      actions: const [],
       ),
       backgroundColor: theme.scaffoldBackgroundColor,
       body: RegistationPhoneForm(

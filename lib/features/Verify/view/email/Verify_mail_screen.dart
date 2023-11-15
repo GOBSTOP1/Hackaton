@@ -5,7 +5,7 @@ import 'package:hackaton2/features/HomeBar/HomeBar.dart';
 import 'package:hackaton2/services/SnackBar.dart';
 
 class VerifyMail extends StatefulWidget {
-  const VerifyMail({Key? key}) : super(key: key);
+  const VerifyMail({super.key});
 
   @override
   _VerifyMailState createState() => _VerifyMailState();

@@ -89,7 +89,7 @@ final darkTheme = ThemeData(
     // Вы также можете настроить другие свойства нижней панели навигации здесь
   ),
   scaffoldBackgroundColor:
-      Color.fromARGB(255, 26, 26, 26), // Фон всего экрана (Scaffold)
+      const Color.fromARGB(255, 26, 26, 26), // Фон всего экрана (Scaffold)
       textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
       foregroundColor: MaterialStateProperty.resolveWith<Color>(

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hackaton2/themeData/bloc/themebloc.dart';
 
 
 class SettingsScreen extends StatefulWidget {
@@ -16,7 +14,7 @@ class _SettingsState extends State<SettingsScreen > {
     final theme = Theme.of(context);
     return Scaffold(
         appBar: AppBar(
-          title: Text("Настройки"),
+          title: const Text("Настройки"),
           iconTheme: IconThemeData(
             color: theme.appBarTheme.iconTheme?.color,
           ),
@@ -27,7 +25,7 @@ class _SettingsState extends State<SettingsScreen > {
                 children: [
                   ListTile(
                   title: Text('Тема приложения',style: theme.textTheme.bodyMedium,),
-                  trailing: Icon(Icons.arrow_forward), 
+                  trailing: const Icon(Icons.arrow_forward), 
                   onTap: (){Navigator.pushNamed(context, '/themeApp');},
                   ),
                   

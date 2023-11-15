@@ -5,7 +5,7 @@ import '../../../../themeData/bloc/themebloc.dart';
 import '../../../../themeData/theme.dart';
 
 class ThemeAppScreen extends StatefulWidget {
-  const ThemeAppScreen({Key? key}) : super(key: key);
+  const ThemeAppScreen({super.key});
 
   @override
   State<ThemeAppScreen> createState() => _ThemeAppScreenState();
@@ -17,7 +17,7 @@ class _ThemeAppScreenState extends State<ThemeAppScreen> {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Тема приложения'),
+        title: const Text('Тема приложения'),
         iconTheme: IconThemeData(
           color: theme.appBarTheme.iconTheme?.color,
         ),
@@ -27,14 +27,14 @@ class _ThemeAppScreenState extends State<ThemeAppScreen> {
       body: BlocBuilder<ThemeBloc, ThemeState>(
         builder: (context, state) {
           return AnimatedTheme(
-            duration: Duration(milliseconds: 15000),
+            duration: const Duration(milliseconds: 15000),
             data: state.themeData,
             child: ListView(
               children: [
                 ListTile(
                   trailing: state.themeData == lightTheme
-                      ? Icon(Icons.check, color: Colors.yellow,)
-                      : Icon(Icons.check),
+                      ? const Icon(Icons.check, color: Colors.yellow,)
+                      : const Icon(Icons.check),
                   title: Text(
                     'Светлая',
                     style: theme.textTheme.bodyMedium,
@@ -45,8 +45,8 @@ class _ThemeAppScreenState extends State<ThemeAppScreen> {
                 ),
                 ListTile(
                   trailing: state.themeData == darkTheme
-                      ? Icon(Icons.check, color: Colors.yellow,)
-                      : Icon(Icons.check),
+                      ? const Icon(Icons.check, color: Colors.yellow,)
+                      : const Icon(Icons.check),
                   title: Text(
                     'Темная',
                     style: theme.textTheme.bodyMedium,

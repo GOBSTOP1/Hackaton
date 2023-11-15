@@ -1,12 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hackaton2/features/Verify/Verify.dart';
 import 'package:hackaton2/repositories/Verify/verify_repository.dart';
 
-import '../../../../services/SnackBar.dart';
-import '../../bloc/email/emailBloc.dart';
 import '../../widgets/email/Auth_mail_widget.dart';
 
 class AuthMail extends StatefulWidget {
@@ -55,10 +50,10 @@ void togglePasswordView() {
     return Scaffold(
       resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text('Регистрация'),
+          title: const Text('Регистрация'),
           iconTheme: IconThemeData(color: theme.appBarTheme.iconTheme?.color),
           backgroundColor: theme.scaffoldBackgroundColor,
-          actions: [],
+          actions: const [],
         ),
         backgroundColor: theme.scaffoldBackgroundColor,
         body: RegistrationForm(

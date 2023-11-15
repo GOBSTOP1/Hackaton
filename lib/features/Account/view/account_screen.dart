@@ -15,12 +15,12 @@ class _AccountState extends State<Account> {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Профиль',),
+        title: const Text('Профиль',),
         iconTheme: IconThemeData(color:theme.appBarTheme.iconTheme?.color),
         backgroundColor: theme.scaffoldBackgroundColor,
-        actions: [IconButton(onPressed: (){}, icon: Icon(Icons.notifications))]),
+        actions: [IconButton(onPressed: (){}, icon: const Icon(Icons.notifications))]),
         backgroundColor: theme.scaffoldBackgroundColor,
-        body: ListViewAccount(),
+        body: const ListViewAccount(),
     );
   }
 }

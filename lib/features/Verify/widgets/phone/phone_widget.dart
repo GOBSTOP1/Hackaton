@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hackaton2/repositories/Verify/verify.dart';
 
 class RegistationPhoneForm extends StatefulWidget {
   const RegistationPhoneForm({
@@ -56,7 +55,7 @@ class _RegistationPhoneFormState extends State<RegistationPhoneForm> {
                 // Обработка повторного нажатия после отправки кода, если нужно
               }
             
-          }, child: Text('Отправить код')),
+          }, child: const Text('Отправить код')),
            if (isSmsCodeSent)
             TextFormField(
               keyboardType: TextInputType.number,
@@ -71,7 +70,7 @@ class _RegistationPhoneFormState extends State<RegistationPhoneForm> {
               onPressed: () {
                _signInWithCode();
               },
-              child: Text('Подтвердить'),
+              child: const Text('Подтвердить'),
             ),
         ],
       ));
