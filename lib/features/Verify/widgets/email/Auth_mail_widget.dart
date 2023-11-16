@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class RegistrationForm extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
@@ -10,8 +9,9 @@ class RegistrationForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final Function signUp;
 
-  const RegistrationForm({super.key, 
-    required this.emailController,   
+  const RegistrationForm({
+    super.key,
+    required this.emailController,
     required this.passwordController,
     required this.repeatPasswordController,
     required this.isHiddenPassword,
@@ -95,8 +95,13 @@ class RegistrationForm extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 30,),
-            ElevatedButton(onPressed: () => Navigator.pushNamed(context, '/authPhone'), child: const Text('По номеру телефона'),),
+            const SizedBox(
+              height: 30,
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pushNamed(context, '/authPhone'),
+              child: const Text('По номеру телефона'),
+            ),
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {

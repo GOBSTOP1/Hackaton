@@ -52,13 +52,13 @@ class VerifyRepository implements AbstractVerifyRepository {
 
     navigator.pushNamed(
       '/verifyMail',
-      
       arguments: {
         'email': emailController.text.trim(),
       },
     );
   }
-   @override
+
+  @override
   Future<void> login({
     required BuildContext context,
     required TextEditingController emailController,
@@ -66,7 +66,7 @@ class VerifyRepository implements AbstractVerifyRepository {
   }) async {
     const isValid = true; // Add your validation logic here
     if (!isValid) return;
- 
+
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
@@ -81,45 +81,41 @@ class VerifyRepository implements AbstractVerifyRepository {
       );
     }
   }
+
   @override
   Future<void> verifyPhoneNumber({
-    required TextEditingController numberController, 
-    }  ) async{
-     
+    required TextEditingController numberController,
+  }) async {
     try {
       await FirebaseAuth.instance.verifyPhoneNumber(
-        verificationCompleted:  (PhoneAuthCredential credential) async {
+        verificationCompleted: (PhoneAuthCredential credential) async {
           // Automatically sign in the user (only on Android)
           await FirebaseAuth.instance.signInWithCredential(credential);
           // Handle verification completed
-        }, 
+        },
         verificationFailed: (FirebaseAuthException e) {},
-        // codeSent: (String verificationId, int? resendToken) {}, 
+        // codeSent: (String verificationId, int? resendToken) {},
         codeSent: (String verificationId, int? resendToken) {
           // Сохранить verificationId в классе
           this.verificationId = verificationId;
         },
-        codeAutoRetrievalTimeout:(String verificationId) {},
+        codeAutoRetrievalTimeout: (String verificationId) {},
         phoneNumber: numberController.text.trim(),
       );
-    } catch (e){
-      
-    }
+    } catch (e) {}
   }
+
   @override
-  Future<void> signInWithCode({required TextEditingController smsController }) async {
-    try{
-      if(verificationId != null){
+  Future<void> signInWithCode(
+      {required TextEditingController smsController}) async {
+    try {
+      if (verificationId != null) {
         PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: verificationId!, 
-          smsCode:  smsController.text.trim()
-          );
+            verificationId: verificationId!,
+            smsCode: smsController.text.trim());
         await FirebaseAuth.instance.signInWithCredential(credential);
         verificationId = null;
       }
-    } catch (e){
-      
-    }
+    } catch (e) {}
   }
-  
 }

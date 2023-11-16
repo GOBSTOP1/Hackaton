@@ -14,6 +14,4 @@ class Dish {
     required this.description,
     required this.type,
   });
-
-  
 }

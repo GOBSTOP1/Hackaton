@@ -47,8 +47,9 @@ class _OrganisationState extends State<OrganisationScreen> {
         builder: (context, state) {
           if (state is OrganisationLoaded) {
             filteredOrgList = state.orgList
-                .where((org) =>
-                    org.name.toLowerCase().contains(_searchOrgController.text.toLowerCase()))
+                .where((org) => org.name
+                    .toLowerCase()
+                    .contains(_searchOrgController.text.toLowerCase()))
                 .toList();
 
             return Column(
@@ -73,27 +74,61 @@ class _OrganisationState extends State<OrganisationScreen> {
                     itemBuilder: (context, index) {
                       final org = filteredOrgList[index];
                       return ListTile(
-                        leading: Image.network(org.logo),
+                        leading: SizedBox(
+                          child: Image.network(org.logo),
+                          height: 40,
+                          width: 40,
+                        ),
                         title: Text(
                           org.name,
                           style: theme.textTheme.bodyMedium,
                         ),
-                        onTap: () {
+                        subtitle: Text(
+                          org.adress,
+                          style: theme.textTheme.bodySmall,
+                        ),
+                        onTap: () async {
                           final userUid =
                               FirebaseAuth.instance.currentUser?.uid;
-                          final usersCollection = FirebaseFirestore.instance
-                              .collection('users');
-                          usersCollection.doc(userUid).set({
-                            'foodprovider_id': org.id,
-                            'foodprovider_name': org.name,
-                          }).then((_) {
-                            print(
-                                'Информация о выбранной организации записана в Firestore');
-                          }).catchError((error) {
-                            print('Ошибка записи в Firestore: $error');
-                          });
+                          final usersCollection =
+                              FirebaseFirestore.instance.collection('users');
+
+                          // Check if a document with the same values already exists
+                          final existingDoc = await usersCollection
+                              .where('userUid', isEqualTo: userUid)
+                              .get();
+
+                          if (existingDoc.docs.isNotEmpty) {
+                            // Document with the same values exists, update it
+                            final docId = existingDoc.docs.first.id;
+                            await usersCollection.doc(docId).update({
+                              'organisation_id': org.id,
+                              'organisation_name': org.name,
+                              'organisation_adress': org.adress,
+                            }).then((_) {
+                              print(
+                                  'Информация о выбранной организации обновлена в Firestore');
+                            }).catchError((error) {
+                              print('Ошибка обновления в Firestore: $error');
+                            });
+                          } else {
+                            // Document with the same values doesn't exist, add a new one
+                            await usersCollection.add({
+                              'userUid': userUid,
+                              'organisation_id': org.id,
+                              'organisation_name': org.name,
+                              'organisation_adress': org.adress,
+                            }).then((_) {
+                              print(
+                                  'Информация о выбранной организации записана в Firestore');
+                            }).catchError((error) {
+                              print('Ошибка записи в Firestore: $error');
+                            });
+                          }
+
                           print('Выбрана организация: ${org.name}');
-                          SnackBarService.showSnackBar(context, 'Выбрана организация: ${org.name}', false);
+                          SnackBarService.showSnackBar(context,
+                              'Выбрана организация: ${org.name}', false);
                           Navigator.pop(context);
                         },
                       );

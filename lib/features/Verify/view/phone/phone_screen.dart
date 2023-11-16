@@ -19,22 +19,23 @@ class _PhoneScreenState extends State<PhoneScreen> {
     phoneNumberInpitController.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Регистрация'),
-      iconTheme: IconThemeData(color: theme.appBarTheme.iconTheme?.color),
-      backgroundColor: theme.scaffoldBackgroundColor,
-      actions: const [],
+      appBar: AppBar(
+        title: const Text('Регистрация'),
+        iconTheme: IconThemeData(color: theme.appBarTheme.iconTheme?.color),
+        backgroundColor: theme.scaffoldBackgroundColor,
+        actions: const [],
       ),
       backgroundColor: theme.scaffoldBackgroundColor,
       body: RegistationPhoneForm(
-        phoneController: phoneNumberInpitController, 
-        formKey: formKey, 
+        phoneController: phoneNumberInpitController,
+        formKey: formKey,
         signUp: _verifyRepository.verifyPhoneNumber,
-        smsController: smsInputController, 
+        smsController: smsInputController,
         signInWithCode: _verifyRepository.signInWithCode,
       ),
     );

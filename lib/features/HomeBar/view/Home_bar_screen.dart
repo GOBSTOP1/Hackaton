@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackaton2/features/Account/view/account_screen.dart';
+import 'package:hackaton2/features/Cart/view/Cart_screen.dart';
 import 'package:hackaton2/features/Menu/Menu.dart';
-
-
-
-
-
 
 class HomeBar extends StatefulWidget {
   const HomeBar({super.key});
@@ -13,19 +9,19 @@ class HomeBar extends StatefulWidget {
   @override
   State<HomeBar> createState() => _HomeBarState();
 }
-   final List<Widget> pages = [ 
-      const Menu(),
-      const Account(),
-     
-      ];
+
+final List<Widget> pages = [
+  const Menu(),
+  const Cart(),
+  const Account(),
+];
+
 class _HomeBarState extends State<HomeBar> {
   int currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      
       bottomNavigationBar: NavigationBar(
         backgroundColor:
             Theme.of(context).bottomNavigationBarTheme.backgroundColor,
@@ -48,9 +44,7 @@ class _HomeBarState extends State<HomeBar> {
           )
         ],
       ),
-      body:pages[currentPageIndex],
-      
+      body: pages[currentPageIndex],
     );
   }
 }
-

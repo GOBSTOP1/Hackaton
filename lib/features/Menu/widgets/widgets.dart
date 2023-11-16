@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:hackaton2/features/Menu/bloc/menuBloc.dart';
-import 'package:hackaton2/repositories/Menu/abstract_menu.dart';
 import 'package:hackaton2/repositories/Menu/models/menu_dish.dart';
 import 'package:hackaton2/repositories/News/models/models.dart';
+
+import '../../Cart/bloc/cartBloc.dart';
 
 class NewsHorizontalCardList extends StatelessWidget {
   final List<News> newsList;
@@ -55,7 +54,6 @@ class NewsHorizontalCard extends StatelessWidget {
   }
 }
 
-
 class MenuItemCard extends StatelessWidget {
   final Dish dish;
 
@@ -90,6 +88,16 @@ class MenuItemCard extends StatelessWidget {
                   Text(
                     '${dish.price} ₽',
                     style: const TextStyle(fontSize: 16.0),
+                  ),
+                  const SizedBox(height: 10.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: () {},
+                      ),
+                    ],
                   ),
                 ],
               ),

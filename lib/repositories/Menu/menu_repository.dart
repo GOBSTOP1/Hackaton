@@ -16,16 +16,17 @@ class MenuRepository implements AbstractMenuRepository {
       }
 
       // Получаем foodprovider_id из документа пользователя
-      final userDoc = await db.collection("users").doc(userUid).get();
-      final foodProviderId = userDoc['foodprovider_id'];
+      // final userDoc = await db.collection("users").doc().get();
+      // final organisationId = userDoc['organisation_id'];
 
-      if (foodProviderId == null) {
-        throw Exception("foodprovider_id not found for the user");
-      }
+      // if (foodProviderId == null) {
+      //   throw Exception("foodprovider_id not found for the user");
+      // }
 
       // Используем полученный foodprovider_id для фильтрации блюд
-      final response =
-          await db.collection("menu").where('foodprovider_id', isEqualTo: foodProviderId).get();
+      // final response =
+      //     await db.collection("menu").where('foodprovider_id', isEqualTo: foodProviderId).get();
+      final response = await db.collection("menu").get();
 
       List<Dish> menuList = response.docs.map((doc) {
         Map<String, dynamic> data = doc.data();
