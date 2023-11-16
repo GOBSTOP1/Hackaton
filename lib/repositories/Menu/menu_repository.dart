@@ -11,9 +11,7 @@ class MenuRepository implements AbstractMenuRepository {
       final db = FirebaseFirestore.instance;
       final userUid = FirebaseAuth.instance.currentUser?.uid;
 
-      if (userUid == null) {
-        throw Exception("User not authenticated");
-      }
+      
 
       // Получаем foodprovider_id из документа пользователя
       final userDoc = await db.collection("users").doc(userUid).get();
@@ -23,7 +21,7 @@ class MenuRepository implements AbstractMenuRepository {
         throw Exception("foodprovider_id not found for the user");
       }
 
-      // Используем полученный foodprovider_id для фильтрации блюд
+      
       final response =
           await db.collection("menu").where('foodprovider_id', isEqualTo: foodProviderId).get();
 
@@ -48,7 +46,7 @@ class MenuRepository implements AbstractMenuRepository {
       return menuList;
     } catch (e) {
       print("Error loading menu: $e");
-      // Доделать обработку ошибок(желательно)
+      
       return [];
     }
   }
