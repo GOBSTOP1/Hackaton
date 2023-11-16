@@ -33,7 +33,10 @@ class _ThemeAppScreenState extends State<ThemeAppScreen> {
               children: [
                 ListTile(
                   trailing: state.themeData == lightTheme
-                      ? const Icon(Icons.check, color: Colors.yellow,)
+                      ? const Icon(
+                          Icons.check,
+                          color: Colors.yellow,
+                        )
                       : const Icon(Icons.check),
                   title: Text(
                     'Светлая',
@@ -45,7 +48,10 @@ class _ThemeAppScreenState extends State<ThemeAppScreen> {
                 ),
                 ListTile(
                   trailing: state.themeData == darkTheme
-                      ? const Icon(Icons.check, color: Colors.yellow,)
+                      ? const Icon(
+                          Icons.check,
+                          color: Colors.yellow,
+                        )
                       : const Icon(Icons.check),
                   title: Text(
                     'Темная',

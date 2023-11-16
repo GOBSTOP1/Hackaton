@@ -8,8 +8,8 @@ import 'package:hackaton2/repositories/Menu/menu.dart';
 import 'package:hackaton2/repositories/News/abstract_news.dart';
 
 import '../../../repositories/Menu/models/menu_dish.dart';
+import '../../Cart/bloc/cartBloc.dart';
 import '../widgets/widgets.dart';
-
 
 class Menu extends StatefulWidget {
   const Menu({Key? key}) : super(key: key);
@@ -21,6 +21,7 @@ class Menu extends StatefulWidget {
 class _MenuState extends State<Menu> {
   final _menuBloc = MenuBloc(GetIt.I<AbstractMenuRepository>());
   final _newsBloc = NewsBloc(GetIt.I<AbstractNewsRepository>());
+  final _cartBloc = CartBloc();
 
   @override
   void initState() {
@@ -49,25 +50,25 @@ class _MenuState extends State<Menu> {
                   automaticallyImplyLeading: false,
                 ),
                 SliverToBoxAdapter(
-                  child: BlocBuilder<NewsBloc, NewsState>(
-                    bloc: _newsBloc,
-                    builder: (context, state) {
-                      if(state is NewsLoaded){
-                        return NewsHorizontalCardList(newsList: state.newsList);
-                      }
-                      
-                      return Container();
-                    }
-                                        
-                  
-                  )
-                ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      return MenuItemCard(dish: state.dishList[index]);
-                    },
-                    childCount: state.dishList.length,
+                    child: BlocBuilder<NewsBloc, NewsState>(
+                        bloc: _newsBloc,
+                        builder: (context, state) {
+                          if (state is NewsLoaded) {
+                            return NewsHorizontalCardList(
+                                newsList: state.newsList);
+                          }
+
+                          return Container();
+                        })),
+                BlocProvider.value(
+                  value: _cartBloc,
+                  child: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        return MenuItemCard(dish: state.dishList[index]);
+                      },
+                      childCount: state.dishList.length,
+                    ),
                   ),
                 ),
                 const SliverToBoxAdapter(
