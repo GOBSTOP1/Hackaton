@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hackaton2/features/Cart/bloc/cartBloc.dart';
+import 'package:hackaton2/repositories/Cart/abstract_cart.dart';
 import 'package:hackaton2/repositories/Menu/menu.dart';
+import 'package:hackaton2/services/SnackBar.dart';
 
-import '../models/cart.dart';
+import '../../../repositories/Cart/models/cart.dart';
 // Укажите путь к вашему файлу с Bloc
 
 class Cart extends StatelessWidget {
@@ -12,10 +14,11 @@ class Cart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _cartBloc = GetIt.I<CartBloc>();
+    
+    final _cartBloc = CartBloc(GetIt.I<AbstractCartRepository>());
 
     return BlocProvider(
-      create: (context) => CartBloc(),
+      create: (context) => _cartBloc,
       child: Scaffold(
         appBar: AppBar(
           title: Text('Shopping Cart'),
@@ -64,7 +67,11 @@ class Cart extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.add),
                   onPressed: () {
+                    if(cartDish.quantity >= 30){
+                      SnackBarService.showSnackBar(context, 'Ошибка:Больше 30 нельзя', true);
+                    }
                     cartBloc.add(IncrementCartDishEvent(dish: cartDish.dish));
+                    
                   },
                 ),
                 IconButton(

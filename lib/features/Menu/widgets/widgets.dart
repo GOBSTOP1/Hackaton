@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hackaton2/features/Cart/models/cart.dart';
+import 'package:hackaton2/repositories/Cart/models/cart.dart';
 import 'package:hackaton2/repositories/Menu/models/menu_dish.dart';
 import 'package:hackaton2/repositories/News/models/models.dart';
 

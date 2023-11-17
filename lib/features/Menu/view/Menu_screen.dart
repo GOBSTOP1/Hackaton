@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hackaton2/features/Menu/bloc/menuBloc.dart';
 import 'package:hackaton2/features/Menu/newsScreen/bloc/newsBloc.dart';
+import 'package:hackaton2/repositories/Cart/cart.dart';
 import 'package:hackaton2/repositories/Menu/abstract_menu.dart';
 import 'package:hackaton2/repositories/Menu/menu.dart';
 import 'package:hackaton2/repositories/News/abstract_news.dart';
@@ -21,7 +22,7 @@ class Menu extends StatefulWidget {
 class _MenuState extends State<Menu> {
   final _menuBloc = MenuBloc(GetIt.I<AbstractMenuRepository>());
   final _newsBloc = NewsBloc(GetIt.I<AbstractNewsRepository>());
-  final _cartBloc = GetIt.I<CartBloc>();
+  final _cartBloc = CartBloc(GetIt.I<AbstractCartRepository>());
 
   @override
   void initState() {

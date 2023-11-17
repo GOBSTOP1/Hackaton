@@ -1,134 +1,155 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hackaton2/features/Cart/models/cart.dart';
+import 'package:hackaton2/repositories/Cart/cart.dart';
+import 'package:hackaton2/repositories/Cart/models/cart.dart';
+import 'package:hackaton2/services/SnackBar.dart';
 
 import '../../../repositories/Menu/models/menu_dish.dart';
 
+// Импорт сгенерированных частей BLoC
 part 'cartEvent.dart';
 part 'cartState.dart';
 
 class CartBloc extends Bloc<CartEvent, CartState> {
-  CartBloc() : super(CartInitial()) {
-    print('AddToCartEvent registered, ${cart.length} ${cart}');
-    on<AddToCartEvent>((AddToCartEvent event, Emitter<CartState> emit) async {
-      CartDish? cartDish;
-      bool alreadyInCart = false;
 
-      for (var item in cart) {
-        if (item.dish.id == event.dish.id) {
-          cartDish = item;
-          alreadyInCart = true;
-          break;
-        }
+  final AbstractCartRepository cartRepository;
+  
+  CartBloc(this.cartRepository,) : super(CartInitial())  {
+    
+    
+    // Вывод сообщения при инициализации BLoC
+    
+
+    // Регистрация обработчиков событий
+    on<AddToCartEvent>(_handleAddToCartEvent);
+    on<RemoveFromCartEvent>(_handleRemoveFromCartEvent);
+    on<IncrementCartDishEvent>(_handleIncrementCartDishEvent);
+    on<DecrementCartDishEvent>(_handleDecrementCartDishEvent);
+  }
+  
+  // Обработка события добавления товара в корзину
+  void _handleAddToCartEvent(AddToCartEvent event, Emitter<CartState> emit) async {
+    CartDish? cartDish;
+    bool alreadyInCart = false;
+    final cart = await cartRepository.loadCart();
+    
+    // Поиск товара в корзине
+    for (var item in cart) {
+      if (item.dish.id == event.dish.id) {
+        cartDish = item;
+        alreadyInCart = true;
+        break;
       }
+    }
 
-      if (alreadyInCart) {
-        // Товар уже в корзине, увеличиваем количество
-        cartDish?.quantity++;
-      } else {
-        // Товара нет в корзине, добавляем новый
-        cart.add(event.cartDish);
-      }
+    // Увеличение количества товара в корзине или добавление нового товара
+    if (alreadyInCart) {
+      cartDish?.quantity++;
+    } else {
+      cart.add(event.cartDish);
+    }
 
-      emit(CartLoaded(cart: List.from(cart)));
-      final userUid = FirebaseAuth.instance.currentUser?.uid;
-      final cartCollection = FirebaseFirestore.instance.collection('cart');
-      final foundDoc =
-          await cartCollection.where('userUid', isEqualTo: userUid).get();
+    // Обновление состояния корзины
+    emit(CartLoaded(cart: List.from(cart)));
 
-      // Проверяем, есть ли документ с текущим userUid
-      if (foundDoc.docs.isNotEmpty) {
-        final docId = foundDoc.docs.first.id;
+    // Обновление данных в Firestore
+    _updateFirestore(event.dish.id, FieldValue.increment(1));
+  }
 
-        // Проверяем, есть ли документ в подколлекции items с тем же dishId
-        final itemDoc = await cartCollection
-            .doc(docId)
-            .collection('items')
-            .where('dishId', isEqualTo: event.dish.id)
-            .get();
+  // Обработка события удаления товара из корзины
+  void _handleRemoveFromCartEvent(RemoveFromCartEvent event, Emitter<CartState> emit) async {
+    final userUid = FirebaseAuth.instance.currentUser?.uid;
+    final cartCollection = FirebaseFirestore.instance.collection('cart');
+    final cart = await cartRepository.loadCart();
 
-        if (itemDoc.docs.isNotEmpty) {
-          // Если документ существует, увеличиваем counter на 1
-          final itemId = itemDoc.docs.first.id;
-          await cartCollection
-              .doc(docId)
-              .collection('items')
-              .doc(itemId)
-              .update({
-            'counter': FieldValue.increment(1),
-          });
-        } else {
-          // Если документ не существует, добавляем новый с dishId и counter = 1
-          await cartCollection.doc(docId).collection('items').add({
-            'dishId': event.dish.id,
-            'counter': 1,
-          });
-        }
-      } else {
-        // Создаем новый документ с текущим userUid
-        final newDocRef = await cartCollection.add({
-          'userUid': userUid,
-        });
+    // Поиск документа с текущим userUid
+    final foundDoc = await cartCollection.where('userUid', isEqualTo: userUid).get();
 
-        // Добавляем dish.id в подколлекцию items с counter = 1
-        await newDocRef.collection('items').add({
-          'dishId': event.dish.id,
-          'counter': 1,
-        });
-      }
-    });
+    if (foundDoc.docs.isNotEmpty) {
+      final docId = foundDoc.docs.first.id;
 
-    on<RemoveFromCartEvent>(
-        (RemoveFromCartEvent event, Emitter<CartState> emit) async {
+      // Удаление товара из основной коллекции корзины
       cart.removeWhere((item) => item.dish.id == event.dish.id);
       emit(CartLoaded(cart: List.from(cart)));
 
-      final userUid = FirebaseAuth.instance.currentUser?.uid;
-      final cartCollection = FirebaseFirestore.instance.collection('cart');
+      // Удаление соответствующего документа из подколлекции items
+      final itemDoc = await cartCollection
+          .doc(docId)
+          .collection('items')
+          .where('dishId', isEqualTo: event.dish.id)
+          .get();
 
-      final cartDoc = await cartCollection.doc(userUid).get();
-      if (cartDoc.exists) {
-        // Обновляем запись в Firestore, удаляя информацию о блюде из подколлекции items
-
-        await cartCollection.doc(userUid).update({
-          'items': FieldValue.arrayRemove([
-            {
-              'dishId': event.dish.id,
-            }
-          ])
-        });
+      if (itemDoc.docs.isNotEmpty) {
+        final itemId = itemDoc.docs.first.id;
+        await cartCollection
+            .doc(docId)
+            .collection('items')
+            .doc(itemId)
+            .delete();
       }
-    });
-
-    on<IncrementCartDishEvent>(
-        (IncrementCartDishEvent event, Emitter<CartState> emit) {
-      final CartDish cartDish =
-          cart.firstWhere((item) => item.dish.id == event.dish.id);
-      print(
-          ' инкремент товара ${cartDish} ${cartDish.quantity} ${cartDish.dish} ${cartDish.dish.id}');
-      if (cartDish.quantity <= 1) {
-        cartDish.quantity++;
-      }
-      print('Инкрмент отработал');
-      emit(CartLoaded(cart: cart.toList()));
-    });
-
-    on<DecrementCartDishEvent>(
-        (DecrementCartDishEvent event, Emitter<CartState> emit) {
-      final CartDish cartDish =
-          cart.firstWhere((item) => item.dish.id == event.dish.id);
-      print(
-          'декремент товара ${cartDish} ${cartDish.quantity} ${cartDish.dish} ${cartDish.dish.id}');
-      if (cartDish.quantity == 1) {
-        cart.removeWhere((item) => item.dish.id == event.dish.id);
-      } else {
-        cartDish.quantity--;
-      }
-
-      print('декремент отработал');
-      emit(CartLoaded(cart: List.from(cart)));
-    });
+    }
   }
-  final List<CartDish> cart = [];
+
+  // Обработка события увеличения количества товара в корзине
+  void _handleIncrementCartDishEvent(IncrementCartDishEvent event, Emitter<CartState> emit) async {
+    final cart = await cartRepository.loadCart();
+   
+    final CartDish cartDish = cart.firstWhere((item) => item.dish.id == event.dish.id);
+
+    // Проверка допустимого количества товара
+    if (cartDish.quantity >= 1 && cartDish.quantity < 30) {
+      cartDish.quantity++;
+
+      // Обновление состояния корзины
+      emit(CartLoaded(cart: cart.toList()));
+
+      // Обновление данных в Firestore
+      _updateFirestore(event.dish.id, FieldValue.increment(1));
+    }
+  }
+
+  // Обработка события уменьшения количества товара в корзине
+  void _handleDecrementCartDishEvent(DecrementCartDishEvent event, Emitter<CartState> emit) async {
+    final cart = await cartRepository.loadCart();
+   
+    final CartDish cartDish = cart.firstWhere((item) => item.dish.id == event.dish.id);
+    
+    // Уменьшение количества товара или удаление, если оно достигло 1
+    if (cartDish.quantity == 1) {
+      // Удаление товара из корзины
+      cart.removeWhere((item) => item.dish.id == event.dish.id);
+      _updateFirestore(event.dish.id, null);
+    } else {
+      cartDish.quantity--;
+
+      // Обновление состояния корзины
+      emit(CartLoaded(cart: List.from(cart)));
+
+      // Обновление данных в Firestore
+      _updateFirestore(event.dish.id, FieldValue.increment(-1));
+    }
+  }
+
+  // Обновление данных в Firestore
+  void _updateFirestore(String dishId, dynamic value) async {
+    final userUid = FirebaseAuth.instance.currentUser?.uid;
+    final cartCollection = FirebaseFirestore.instance.collection('cart');
+    final foundDoc = await cartCollection.where('userUid', isEqualTo: userUid).get();
+    
+    if (foundDoc.docs.isNotEmpty) {
+      final docId = foundDoc.docs.first.id;
+      final itemDoc = await cartCollection.doc(docId).collection('items').where('dishId', isEqualTo: dishId).get();
+
+      if (itemDoc.docs.isNotEmpty) {
+        final itemId = itemDoc.docs.first.id;
+
+        if (value != null) {
+          await cartCollection.doc(docId).collection('items').doc(itemId).update({'counter': value});
+        } else {
+          await cartCollection.doc(docId).collection('items').doc(itemId).delete();
+        }
+      }
+    }
+  }
 }

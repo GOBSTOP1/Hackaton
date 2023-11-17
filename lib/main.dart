@@ -1,8 +1,10 @@
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hackaton2/features/Cart/bloc/cartBloc.dart';
 import 'package:hackaton2/repositories/Account/Organisation/organisation.dart';
+import 'package:hackaton2/repositories/Cart/cart.dart';
 import 'package:hackaton2/repositories/Menu/abstract_menu.dart';
 import 'package:hackaton2/repositories/Menu/menu.dart';
 import 'package:hackaton2/repositories/News/abstract_news.dart';
@@ -15,7 +17,7 @@ Future<void> main() async {
   GetIt.I.registerLazySingleton<AbstractNewsRepository>(() => NewsRepository());
   GetIt.I.registerLazySingleton<AbstractOrganisationRepository>(
       () => OrganisationRepository());
-  GetIt.I.registerLazySingleton<CartBloc>(() => CartBloc());
+  GetIt.I.registerLazySingleton<AbstractCartRepository>(() => CartRepository());
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
