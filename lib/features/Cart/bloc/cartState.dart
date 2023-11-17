@@ -2,12 +2,10 @@ part of 'cartBloc.dart';
 
 abstract class CartState {}
 
-class CartInitial implements CartState {}
+class CartInitial extends CartState {}
 
-class CartEmpty implements CartState {}
+class CartLoaded extends CartState {
+  final List<CartDish> cart;
 
-class CartIsNotEmpty implements CartState {
-  final List<CartDish> cartItems;
-
-  CartIsNotEmpty({required this.cartItems});
+  CartLoaded({required this.cart});
 }

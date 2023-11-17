@@ -21,48 +21,58 @@ class Menu extends StatefulWidget {
 class _MenuState extends State<Menu> {
   final _menuBloc = MenuBloc(GetIt.I<AbstractMenuRepository>());
   final _newsBloc = NewsBloc(GetIt.I<AbstractNewsRepository>());
-  final _cartBloc = CartBloc();
+  final _cartBloc = GetIt.I<CartBloc>();
 
   @override
   void initState() {
     _newsBloc.add((LoadNewsEvent()));
     _menuBloc.add((LoadMenuEvent()));
+    _cartBloc;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<MenuBloc, MenuState>(
-        bloc: _menuBloc,
-        builder: (context, state) {
-          if (state is MenuLoaded) {
-            return CustomScrollView(
-              physics: const BouncingScrollPhysics(),
-              slivers: <Widget>[
-                SliverAppBar(
-                  floating: true,
-                  pinned: false,
-                  title: Text(
-                    'CorpFoooooood',
-                    style: Theme.of(context).textTheme.bodyMedium,
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => _menuBloc,
+          ),
+          BlocProvider(
+            create: (context) => _cartBloc,
+          ),
+        ],
+        child: BlocBuilder<MenuBloc, MenuState>(
+          bloc: _menuBloc,
+          builder: (context, state) {
+            if (state is MenuLoaded) {
+              return CustomScrollView(
+                physics: const BouncingScrollPhysics(),
+                slivers: <Widget>[
+                  SliverAppBar(
+                    floating: true,
+                    pinned: false,
+                    title: Text(
+                      'CorpFoooooood',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    automaticallyImplyLeading: false,
                   ),
-                  automaticallyImplyLeading: false,
-                ),
-                SliverToBoxAdapter(
+                  SliverToBoxAdapter(
                     child: BlocBuilder<NewsBloc, NewsState>(
-                        bloc: _newsBloc,
-                        builder: (context, state) {
-                          if (state is NewsLoaded) {
-                            return NewsHorizontalCardList(
-                                newsList: state.newsList);
-                          }
-
-                          return Container();
-                        })),
-                BlocProvider.value(
-                  value: _cartBloc,
-                  child: SliverList(
+                      bloc: _newsBloc,
+                      builder: (context, state) {
+                        if (state is NewsLoaded) {
+                          return NewsHorizontalCardList(
+                            newsList: state.newsList,
+                          );
+                        }
+                        return Container();
+                      },
+                    ),
+                  ),
+                  SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
                         return MenuItemCard(dish: state.dishList[index]);
@@ -70,15 +80,15 @@ class _MenuState extends State<Menu> {
                       childCount: state.dishList.length,
                     ),
                   ),
-                ),
-                const SliverToBoxAdapter(
-                  child: SizedBox(height: 20.0),
-                ),
-              ],
-            );
-          }
-          return Container();
-        },
+                  const SliverToBoxAdapter(
+                    child: SizedBox(height: 20.0),
+                  ),
+                ],
+              );
+            }
+            return Container();
+          },
+        ),
       ),
     );
   }

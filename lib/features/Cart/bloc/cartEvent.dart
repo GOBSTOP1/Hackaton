@@ -2,25 +2,27 @@ part of 'cartBloc.dart';
 
 abstract class CartEvent {}
 
-class AddToCartEvent implements CartEvent {
+class AddToCartEvent extends CartEvent {
+  final CartDish cartDish;
   final Dish dish;
-  AddToCartEvent(this.dish);
+
+  AddToCartEvent({required this.cartDish, required this.dish});
 }
 
-class RemoveFromCartEvent implements CartEvent {
-  final String dishId;
+class RemoveFromCartEvent extends CartEvent {
+  final Dish dish;
 
-  RemoveFromCartEvent(this.dishId);
+  RemoveFromCartEvent({required this.dish});
 }
 
 class IncrementCartDishEvent implements CartEvent {
-  final String dishId;
+  final Dish dish;
 
-  IncrementCartDishEvent({required this.dishId});
+  IncrementCartDishEvent({required this.dish});
 }
 
 class DecrementCartDishEvent implements CartEvent {
-  final String dishId;
+  final Dish dish;
 
-  DecrementCartDishEvent({required this.dishId});
+  DecrementCartDishEvent({required this.dish});
 }
