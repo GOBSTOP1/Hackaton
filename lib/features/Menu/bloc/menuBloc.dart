@@ -8,7 +8,6 @@ part 'menuState.dart';
 
 class MenuBloc extends Bloc<MenuEvent, MenuState> {
   MenuBloc(this.menuRepository) : super(MenuInitial()) {
-
     on<LoadMenuEvent>((event, emit) async {
       final dishList = await menuRepository.loadMenu();
       emit(MenuLoaded(dishList: dishList));
